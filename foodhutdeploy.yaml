@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: skmirza-foodhut-deploy
+  labels:
+    app: skmirza-foodhut-deploy-lb01
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: skmirza-foodhut-app
+  template:
+    metadata:
+      labels:
+        app: skmirza-foodhut-app
+    spec:
+      containers:
+      - name: skmirza-foodhut-container
+        image: sameer014/skmirza-foodhut-img:latest
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+        ports:
+        - containerPort: 8090
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: skmirza-foodhut-np-service
+  labels:
+    app: skmirza-foodhut-np-app
+spec:
+  selector:
+    app: skmirza-foodhut-app
+
+  type: NodePort
+  ports:
+  - nodePort: 30023
+    port: 8090
+    targetPort: 8090
