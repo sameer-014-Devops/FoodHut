@@ -253,7 +253,7 @@ pipeline{
               script{
                 echo '**********Cleaning FoodHut Production workspace**********'
                 cleanWs()
-                sh "rm -rf *"
+                deleteDir()
               }
             }
         }
